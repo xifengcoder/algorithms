@@ -3,7 +3,7 @@ package com.algorithms.dynamicprogramming;
 import java.util.HashMap;
 
 /**
- * 求最长公共子序列
+ * 求最长公共子序列(Longest Common Subsequence)
  */
 public class LCS {
     public static void main(String[] args) {
@@ -112,8 +112,20 @@ public class LCS {
      * 时间复杂度O(mn), 辅助空间复杂度O(n).
      * 思路:
      * i固定, LCS(i,j)保存在current[n+1]中, 即LCS(i,0),LCS(i,1),...,LCS(i,n)分别保存到current[0],current[1],...,current[n]中.
-     * prev[n+1]保存i-1时的结果, 即LCS(i-1,j).
-     * 因为LCS(i,j)的结果只依赖于当前行和前一行的结果, 所以只要缓存上一行的结果即可.
+     *
+     * 计算LCS(i,j)的前提是LCS(i-1,[0..j])都已计算好、且(i,[0..j-1])也已计算好.
+     * 过程:
+     * 1. 根据动态规划的思想, LCS(i-1,[0..j])都已计算好, 且保存在current[0..n+1]中;
+     * 2. 计算LCS(i,j)时, LCS(i,j-1)的值也已经计算好, 且保存在current[0..j-1]中, 而且将旧的current[j-1]缓存在prev中;
+     * 这样current[j..length]中还是旧的值, 但是current[0,j-1]已替换为新的值. 现在要计算的就是current[j].
+     * 3. 递推公式:
+     *
+     * LCS(i,j) = LCS(i-1, j-1)                 (若X[i-1] = Y[j-1])
+     *            max(LCS(i-1, j), LCS(i, j-1)) (否则)
+     *
+     * i-1| 1 |...|   prev  | curr[j] |...|
+     * ————————————————————————————————————————
+     * i  | 1 |...|curr[j-1]| LCS(i,j)|...|
      */
     public static int LCSLength4(String X, String Y) {
         int m = X.length(), n = Y.length();
