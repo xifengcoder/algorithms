@@ -2,20 +2,20 @@ package com.algorithms.dynamicprogramming;
 
 /**
  * 给定一个字符串(s)和一个字符模式(p)，实现一个支持'?'和'*'的通配符匹配。
- *
+ * <p>
  * '?' 可以匹配任何单个字符。
  * '*' 可以匹配任意字符串（包括空字符串）。
  * 两个字符串完全匹配才算匹配成功。
- *
+ * <p>
  * 说明:
- *
+ * <p>
  * s 可能为空，且只包含从 a-z 的小写字母。
  * p 可能为空，且只包含从 a-z 的小写字母，以及字符?和*。
- *
+ * <p>
  * 来源：力扣（LeetCode）
  * 链接：https://leetcode-cn.com/problems/wildcard-matching
  * 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
- *
+ * <p>
  * Created by xifeng.yang on 2020/1/15
  */
 public class WildcardMatching {
@@ -32,10 +32,9 @@ public class WildcardMatching {
     }
 
     public boolean isMatch(String s, String p) {
-
-        //这里使用
+        //这里使用Boolean来存储, 因为boolean默认是会初始化的.
         Boolean[][] lookup = new Boolean[s.length() + 1][p.length() + 1];
-        return isMatching(s, s.length(), p, p.length(), lookup);
+        return isMatching(s, s.length() - 1, p, p.length() - 1, lookup);
     }
 
     private boolean isMatching(String s, int n, String p, int m, Boolean[][] table) {
@@ -44,7 +43,7 @@ public class WildcardMatching {
         } else if (m < 0) {
             return false;
         } else if (n < 0) {
-            for (int i = 0; i < m; i++) {
+            for (int i = 0; i <= m; i++) {
                 if (p.charAt(i) != '*') {
                     return false;
                 }
