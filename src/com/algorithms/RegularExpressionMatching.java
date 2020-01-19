@@ -53,10 +53,11 @@ package com.algorithms;
 public class RegularExpressionMatching {
 
     public static void main(String[] args) {
-        String s = "aa";
-        String p = "a*";
+        String s = "aaa";
+        String p = "ab*a*c*a";
         RegularExpressionMatching instance = new RegularExpressionMatching();
-        System.out.println(instance.isMatch(s, p));
+        System.out.println(instance.isMatchUseDP(s, p));
+
     }
 
 
@@ -102,4 +103,67 @@ public class RegularExpressionMatching {
         }
     }
 
+    private boolean isMatchUseDP(String s, String p) {
+        if (s == null || p == null) {
+            return false;
+        }
+
+        Boolean[][] lookup = new Boolean[s.length() + 1][p.length() + 1];
+        return isMatchUseDP(s, s.length() - 1, p, p.length() - 1, lookup);
+    }
+
+    private boolean isMatchUseDP(String s, int m, String p, int n, Boolean[][] lookup) {
+        if (n < 0) {
+            return m < 0;
+        }
+
+        if (m < 0) {
+            return n >= 1 && p.charAt(n) == '*' && isMatchUseDP(s, m, p, n - 2, lookup);
+        }
+
+        if (lookup[m][n] == null) {
+            if (p.charAt(n) == '*') {
+                if (n >= 1) {
+                    if (p.charAt(n - 1) == s.charAt(m) || p.charAt(n - 1) == '.') {
+                        lookup[m][n] = isMatchUseDP(s, m - 1, p, n, lookup) ||
+                                isMatchUseDP(s, m, p, n - 2, lookup);
+                    } else {
+                        lookup[m][n] = isMatchUseDP(s, m, p, n - 2, lookup);
+                    }
+                } else {
+                    lookup[m][n] = false;
+                }
+            } else if (p.charAt(n) == '.') {
+                lookup[m][n] = isMatchUseDP(s, m - 1, p, n - 1, lookup);
+            } else if (p.charAt(n) == s.charAt(m)) {
+                lookup[m][n] = isMatchUseDP(s, m - 1, p, n - 1, lookup);
+            }
+        }
+
+        return lookup[m][n];
+    }
+
+    public boolean isMatchUseDP2(String s, String p) {
+        if (s == null || p == null) {
+            return false;
+        }
+
+        boolean[][] dp = new boolean[s.length() + 1][p.length() + 1];
+        dp[0][0] = true;
+        for (int j = 2; j <= p.length(); j++) {
+            dp[0][j] = dp[0][j - 2] && p.charAt(j - 1) == '*';
+        }
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 1; j <= p.length(); j++) {
+                if (p.charAt(j - 1) == '*') {
+                    dp[i][j] = dp[i][j - 2] || (dp[i - 1][j] &&
+                            (s.charAt(i - 1) == p.charAt(j - 2) || p.charAt(j - 2) == '.'));
+                } else if (s.charAt(i - 1) == p.charAt(j - 1) || p.charAt(j - 1) == '.') {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[s.length()][p.length()];
+    }
 }
