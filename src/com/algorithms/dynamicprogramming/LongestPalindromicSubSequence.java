@@ -1,7 +1,5 @@
 package com.algorithms.dynamicprogramming;
 
-import edu.princeton.cs.algs4.In;
-
 import java.util.HashMap;
 import java.util.Map;
 

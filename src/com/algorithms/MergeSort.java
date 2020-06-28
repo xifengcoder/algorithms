@@ -1,8 +1,5 @@
 package com.algorithms;
 
-import edu.princeton.cs.algs4.StdIn;
-import edu.princeton.cs.algs4.StdOut;
-
 /**
  * 经典问题: 归并排序
  * Created by xifeng.yang on 2020/2/2

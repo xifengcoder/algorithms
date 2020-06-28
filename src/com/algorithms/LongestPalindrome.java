@@ -1,9 +1,5 @@
 package com.algorithms;
 
-import edu.princeton.cs.algs4.In;
-import org.omg.CORBA.INTERNAL;
-import org.omg.PortableInterceptor.INACTIVE;
-
 import java.util.Arrays;
 import java.util.HashMap;
 
